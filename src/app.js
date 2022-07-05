@@ -1,13 +1,15 @@
 const express = require("express");
 const volleyball = require("volleyball");
-const logger = volleyball.custom({ debug: true });
-// const todosRouter = require()
 require("dotenv").config();
+const apiRouter = require("./routes/api");
+const errorHandler = require("./middlewares/errorHandler");
 
 const app = express();
+app.use(volleyball);
 app.use(express.json());
-app.use(logger);
 
-app.use("./api/todos");
+app.use("/api/v1", apiRouter);
+
+app.use(errorHandler);
 
 module.exports = app;
