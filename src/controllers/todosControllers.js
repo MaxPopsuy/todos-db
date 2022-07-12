@@ -1,7 +1,8 @@
-const Todo = require("../db/todos");
+const Todo = require("../models/Todo");
+
 exports.createTodo = async (req, res, next) => {
   try {
-    const newTodo = await Todo.createTodo(req.body);
+    const newTodo = await Todo.create(req.body);
     res.status(201).json(newTodo);
   } catch (error) {
     next(error);
@@ -9,7 +10,7 @@ exports.createTodo = async (req, res, next) => {
 };
 exports.getAllTodos = async (req, res, next) => {
   try {
-    const todos = await Todo.getAllTodos();
+    const todos = await Todo.find();
     res.status(200).json(todos);
   } catch (error) {
     next(error);
@@ -18,9 +19,9 @@ exports.getAllTodos = async (req, res, next) => {
 exports.getTodoById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const todo = await Todo.getTodoById(id);
+    const todo = await Todo.findById(id);
     if (!todo) {
-      res.status(404)
+      res.status(404);
       next(new Error(`Todo with id ${id} not found`));
       return;
     }
@@ -31,14 +32,16 @@ exports.getTodoById = async (req, res, next) => {
 };
 exports.updateTodo = async (req, res, next) => {
   const { id } = req.params;
-  const todo = await Todo.getTodoById(id);
+  const todo = await Todo.findById(id);
   if (!todo) {
-    res.status(404)
+    res.status(404);
     next(new Error(`Todo with id ${id} not found`));
     return;
   }
   try {
-    const newTodo = await Todo.updateTodo(id, req.body);
+    const newTodo = await Todo.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
     res.json(newTodo);
   } catch (error) {
     next(error);
@@ -46,14 +49,14 @@ exports.updateTodo = async (req, res, next) => {
 };
 exports.deleteTodo = async (req, res, next) => {
   const { id } = req.params;
-  const todo = await Todo.getTodoById(id);
+  const todo = await Todo.findById(id);
   if (!todo) {
     res.status(404).json({ message: `Todo with id ${id} not found` });
     return;
   }
   try {
-    await Todo.deleteTodo(id);
-    res.json(`deleted todo with id ${id}`);
+    const deletedTodo = await Todo.findByIdAndRemove(id);
+    res.json(deletedTodo);
   } catch (error) {
     next(error);
   }
@@ -61,15 +64,16 @@ exports.deleteTodo = async (req, res, next) => {
 exports.updateTodoStatus = async (req, res, next) => {
   const { id } = req.params;
   const { status } = req.params;
-  const todo = await Todo.getTodoById(id);
+  const todo = await Todo.findById(id);
   if (!todo) {
     res.status(404).json({ message: `Todo with id ${id} not found` });
     return;
   }
   try {
-    const updatedTodo = await Todo.updateTodoCompleted(id, JSON.parse(status));
-    console.log(req.body);
-    res.json(updatedTodo);
+    todo.completed = req.body.completed;
+    await todo.save();
+
+    res.json(todo);
   } catch (error) {
     next(error);
   }
