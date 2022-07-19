@@ -5,7 +5,7 @@ const todoSchema = new Schema({
     type: String,
     minLength: 3,
     maxLength: 255,
-    required: true
+    required: true,
   },
   priority: {
     type: Number,
@@ -18,6 +18,11 @@ const todoSchema = new Schema({
     default: false,
   },
   author: String,
+  tags: [
+    {
+      type: String,
+    },
+  ],
 });
 
 module.exports = model("todos", todoSchema);
