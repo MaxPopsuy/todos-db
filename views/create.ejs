@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <%- include('layouts/head') %>
+<body>
+  <%- include('layouts/navbar') %>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-4">
+        <form action="/create" method="POST">
+
+          <div class="mb-3">
+            <label class="form-label" for="text">Text</label>
+            <input
+              class="form-control"
+              type="text"
+              autocomplete="off"
+              name="text"
+              id="text"
+              placeholder="Text"
+            >
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="priority">Priority</label>
+            <input
+              class="form-control"
+              type="tel"
+              name="priority"
+              id="priority"
+              placeholder="Priority(0-10)"
+            >
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="tags">Tags</label>
+            <input
+              class="form-control"
+              type="text"
+              autocomplete="street-tags"
+              name="tags"
+              id="tags"
+              placeholder="Tags(cherez comu)"
+            >
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            Create todo
+          </button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

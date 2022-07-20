@@ -1,12 +1,8 @@
 const Todo = require("../models/Todo");
 
 exports.createTodo = async (req, res, next) => {
-  try {
-    const newTodo = await Todo.create(req.body);
-    res.status(201).json(newTodo);
-  } catch (error) {
-    next(error);
-  }
+  const newTodo = await Todo.create(req.body);
+  res.status(201).json(newTodo);
 };
 exports.getAllTodos = async (req, res, next) => {
   try {
@@ -23,7 +19,7 @@ exports.getAllTodos = async (req, res, next) => {
       limit: perPage,
       skip: (page - 1) * perPage,
     });
-    res.status(200).json(todos);
+    res.render("todos", { todos });
   } catch (error) {
     next(error);
   }

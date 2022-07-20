@@ -15,7 +15,7 @@ const router = express.Router();
 const schemaValidate = require("../middlewares/schemaValidate");
 const todosValidators = require("../validations/todos");
 
-router.post("/", schemaValidate(todosValidators.createOrUpdate), createTodo);
+// router.post("/", schemaValidate(todosValidators.createOrUpdate), createTodo);
 router.get("/", getAllTodos);
 router.get("/:id", getTodoById);
 router.put("/:id", schemaValidate(todosValidators.createOrUpdate), updateTodo);
